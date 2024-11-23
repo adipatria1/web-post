@@ -12,6 +12,7 @@ Open your browser and navigate to:
 ```sh
 http://127.0.0.1:5000/ 
 ```
+You need [GRAPH API](https://developers.facebook.com/) to get USER TOKEN
 
 # Usage
 ## Home Page
