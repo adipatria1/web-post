@@ -39,3 +39,6 @@ Bulk Upload: Upload multiple media files (images or videos) at once.
 Scheduling: Set a scheduled time for each upload.
 
 Auto Description: Automatically set the description to match the file name.
+
+![image](https://github.com/user-attachments/assets/db1217e3-534c-42bf-ab1e-34c2f756cf4d)
+
