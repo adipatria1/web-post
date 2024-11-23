@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Media Uploader</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Upload Facebook Media</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <h3>Pilih Halaman:</h3>
+        {% for page in pages %}
+        <div>
+            <input type="checkbox" name="pages" value="{{ page.id }}|{{ page.access_token }}">
+            <label>{{ page.name }}</label>
+        </div>
+        {% endfor %}
+
+        <div id="mediaForms">
+            <!-- Form media pertama -->
+            <div class="media-form">
+                <h3>Upload Media (Video/Gambar):</h3>
+                <input type="file" name="media[]" accept="video/mp4, image/*" class="media-input" required><br><br>
+
+                <h3>Deskripsi:</h3>
+                <textarea name="description[]" rows="4" cols="50" class="description-input" required></textarea><br><br>
+
+                <label>
+                    <input type="checkbox" class="auto-description">
+                    Samakan deskripsi dengan nama file media
+                </label><br><br>
+
+                <h3>Jadwalkan Waktu (Opsional):</h3>
+                <input type="datetime-local" name="schedule_time[]"><br><br>
+            </div>
+        </div>
+
+        <!-- Tombol Tambah Media -->
+        <button type="button" id="addMediaButton">Tambah Media</button><br><br>
+        <button type="submit">Upload</button>
+    </form>
+
+    <script>
+        // Fungsi untuk mengambil nama file tanpa ekstensi
+        function getFileNameWithoutExtension(fileName) {
+            return fileName.split('.').slice(0, -1).join('.');
+        }
+
+        // Fungsi untuk menambahkan event listener ke checkbox dan input file
+        function attachAutoDescriptionHandler() {
+            const forms = document.querySelectorAll('.media-form');
+            forms.forEach((form) => {
+                const mediaInput = form.querySelector('.media-input');
+                const descriptionInput = form.querySelector('.description-input');
+                const autoDescriptionCheckbox = form.querySelector('.auto-description');
+
+                // Saat checkbox diubah
+                autoDescriptionCheckbox.addEventListener('change', function () {
+                    if (this.checked && mediaInput.files.length > 0) {
+                        const fileName = getFileNameWithoutExtension(mediaInput.files[0].name);
+                        descriptionInput.value = fileName;
+                    } else if (!this.checked) {
+                        descriptionInput.value = '';
+                    }
+                });
+
+                // Saat file media diubah
+                mediaInput.addEventListener('change', function () {
+                    if (autoDescriptionCheckbox.checked && mediaInput.files.length > 0) {
+                        const fileName = getFileNameWithoutExtension(mediaInput.files[0].name);
+                        descriptionInput.value = fileName;
+                    }
+                });
+            });
+        }
+
+        // Tambahkan form baru saat tombol "Tambah Media" diklik
+        document.getElementById('addMediaButton').addEventListener('click', function () {
+            const newForm = `
+                <div class="media-form">
+                    <h3>Upload Media (Video/Gambar):</h3>
+                    <input type="file" name="media[]" accept="video/mp4, image/*" class="media-input" required><br><br>
+
+                    <h3>Deskripsi:</h3>
+                    <textarea name="description[]" rows="4" cols="50" class="description-input" required></textarea><br><br>
+
+                    <label>
+                        <input type="checkbox" class="auto-description">
+                        Samakan deskripsi dengan nama file media
+                    </label><br><br>
+
+                    <h3>Jadwalkan Waktu (Opsional):</h3>
+                    <input type="datetime-local" name="schedule_time[]"><br><br>
+                </div>
+            `;
+            // Tambahkan form baru ke container
+            document.getElementById('mediaForms').insertAdjacentHTML('beforeend', newForm);
+
+            // Tambahkan event listener untuk form baru
+            attachAutoDescriptionHandler();
+        });
+
+        // Pasang handler ke form awal
+        attachAutoDescriptionHandler();
+    </script>
+</body>
+</html>
