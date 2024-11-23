@@ -1,4 +1,4 @@
-# Multuple Fanpage Video an Photo Uploader
+# Multiple Fanpage Video an Photo Uploader
 
 Start the application by running the following command:
 ```sh
