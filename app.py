@@ -15,7 +15,7 @@ def get_page_list(user_access_token):
     """
     Mengambil daftar halaman berdasarkan user access token.
     """
-    url = f"https://graph.facebook.com/v16.0/me/accounts?access_token={user_access_token}"
+    url = f"https://graph.facebook.com/v21.0/me/accounts?access_token={user_access_token}"
     response = requests.get(url)
     if response.status_code == 200:
         pages = response.json().get("data", [])
